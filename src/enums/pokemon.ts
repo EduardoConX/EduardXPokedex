@@ -3,6 +3,7 @@ import secondGeneration from './pokemonGenerations/secondGeneration';
 import thirdGeneration from './pokemonGenerations/thirdGeneration';
 import fourthGeneration from './pokemonGenerations/fourthGeneration';
 import fifthGeneration from './pokemonGenerations/fifthGeneration';
+import sixthGeneration from './pokemonGenerations/sixthGeneration';
 
 const pokemon =
     [
@@ -11,6 +12,7 @@ const pokemon =
         ...thirdGeneration,
         ...fourthGeneration,
         ...fifthGeneration,
+        ...sixthGeneration,
     ];
 
 export default pokemon;
