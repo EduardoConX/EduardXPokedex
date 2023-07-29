@@ -4,13 +4,12 @@ import pokemon from "./enums/pokemon";
 
 <template>
   <div class="grid grid-cols-4 gap-4">
-    <div class="flex flex-col"
-     v-for="i in 151" :key="i">
+    <div class="flex flex-col" v-for="i in pokemon.length" :key="i">
       <img
         :src="`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${i}.png`"
         :alt="`${i}`"
       />
-      <p class="text-2xl">{{ pokemon[i-1] }}</p>
+      <p class="text-2xl">{{ i }} - {{ pokemon[i - 1] }}</p>
     </div>
   </div>
 </template>
