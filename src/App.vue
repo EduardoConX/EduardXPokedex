@@ -3,7 +3,7 @@ import pokemon from "./enums/pokemon";
 </script>
 
 <template>
-  <div class="grid grid-cols-4 gap-4">
+  <div class="grid grid-cols-6 gap-4">
     <div class="flex flex-col" v-for="i in pokemon.length" :key="i">
       <img
         :src="`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${i}.png`"
