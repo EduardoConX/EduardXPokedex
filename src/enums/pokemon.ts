@@ -5,6 +5,7 @@ import fourthGeneration from './pokemonGenerations/fourthGeneration';
 import fifthGeneration from './pokemonGenerations/fifthGeneration';
 import sixthGeneration from './pokemonGenerations/sixthGeneration';
 import seventhGeneration from './pokemonGenerations/seventhGeneration';
+import eighthGeneration from './pokemonGenerations/eighthGeneration';
 
 const pokemon =
     [
@@ -15,6 +16,7 @@ const pokemon =
         ...fifthGeneration,
         ...sixthGeneration,
         ...seventhGeneration,
+        ...eighthGeneration,
     ];
 
 export default pokemon;
