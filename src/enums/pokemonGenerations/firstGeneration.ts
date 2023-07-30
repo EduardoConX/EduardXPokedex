@@ -119,7 +119,7 @@ const firstGeneration = [
     'Goldeen',
     'Seaking',
     'Staryu',
-    'Starmie ',
+    'Starmie',
     'Mr. Mime',
     'Scyther',
     'Jynx',
