@@ -17,10 +17,10 @@ const { isLoading, occurrences } = usePokemons();
                     : 'border-blue-500'
             }`">
             <img :src="`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${i}.png`" :alt="`${i}`" />
-            <p class="text-sm md:text-2xl">
+            <RouterLink class="text-sm md:text-2xl text-white" :to="`/pokemon/${i}`">
                 {{ i }} - {{ pokemon[i - 1] }}
                 {{ occurrences[i] == '-' ? '☆' : `(${occurrences[i]})` }}
-            </p>
+            </RouterLink>
         </div>
     </div>
 </template>
