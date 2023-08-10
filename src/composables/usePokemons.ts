@@ -1,27 +1,28 @@
 import { ref, watch } from "vue";
 import { useQuery } from "@tanstack/vue-query";
-import { getOccurrencesAPI } from '../api/pokemon';
+import { getPokemonsAPI } from '../api/pokemon';
+import { PokemonInfo } from '../interfaces/PokemonInfo';
 
-const getOccurrences = async () => {
-    const { data } = await getOccurrencesAPI();
+const getPokemons = async () => {
+    const { data } = await getPokemonsAPI();
     return data;
 }
 
 const usePokemons = () => {
-    const occurrences = ref<string[]>([]);
+    const pokemons = ref<PokemonInfo[]>([]);
 
     const { isLoading, data } = useQuery(
-        ['communities'],
-        () => getOccurrences()
+        ['pokemons'],
+        () => getPokemons()
     );
 
     watch(data, () => {
-        if (data.value) occurrences.value = data.value;
+        if (data.value) pokemons.value = data.value;
     }, { immediate: true })
 
     return {
         isLoading,
-        occurrences
+        pokemons
     }
 }
 

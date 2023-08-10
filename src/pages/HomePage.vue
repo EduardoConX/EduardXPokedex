@@ -1,20 +1,20 @@
 <script setup lang="ts">
-import pokemon from "../enums/pokemon";
 import usePokemons from "../composables/usePokemons";
-const { isLoading, occurrences } = usePokemons();
+const { isLoading, pokemons } = usePokemons();
 
 const countCondition = (condition: string) => {
   let filteredArray = [];
   if (condition == "catched") {
-    filteredArray = occurrences.value.filter((o) => o != "0");
+    filteredArray = pokemons.value.filter((p) => p.occurrences != "0");
   }
   if (condition == "repeated") {
-    filteredArray = occurrences.value.filter(
-      (o) => o != "0" && o != "-" && o != "1"
+    filteredArray = pokemons.value.filter(
+      (p) =>
+        p.occurrences != "0" && p.occurrences != "-" && p.occurrences != "1"
     );
   }
   if (condition == "pending") {
-    filteredArray = occurrences.value.filter((o) => o == "0");
+    filteredArray = pokemons.value.filter((p) => p.occurrences == "0");
   }
 
   return filteredArray.length;
@@ -38,25 +38,27 @@ const countCondition = (condition: string) => {
     </div>
     <div class="grid grid-cols-3 md:grid-cols-6 gap-4">
       <div
-        v-for="i in pokemon.length"
-        :key="i"
+        v-for="(pokemon, i) in pokemons"
+        :key="pokemon.pokemon"
         :class="`flex flex-col border-4 ${
-          occurrences[i] == '-'
+          pokemon.occurrences == '-'
             ? 'border-yellow-500'
-            : occurrences[i] == '0'
+            : pokemon.occurrences == '0'
             ? 'border-red-500'
-            : occurrences[i] == '1'
+            : pokemon.occurrences == '1'
             ? 'border-green-500'
             : 'border-blue-500'
         }`"
       >
         <img
-          :src="`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${i}.png`"
-          :alt="`${i}`"
+          :src="`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${
+            i + 1
+          }.png`"
+          :alt="`${i + 1}`"
         />
         <p class="text-sm md:text-2xl text-white">
-          {{ i }} - {{ pokemon[i - 1] }}
-          {{ occurrences[i] == "-" ? "☆" : `(${occurrences[i]})` }}
+          {{ i }} - {{ pokemon.pokemon }}
+          {{ `(${pokemon.occurrences})` }}
         </p>
       </div>
     </div>
