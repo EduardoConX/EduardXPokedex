@@ -1,29 +1,43 @@
 import { ref, watch } from "vue";
 import { useQuery } from "@tanstack/vue-query";
-import { getPokemonsAPI } from '../api/pokemon';
-import { PokemonInfo } from '../interfaces/PokemonInfo';
+import { PokemonInfo } from "../interfaces/PokemonInfo";
+import { database } from "./../database/config";
+import { child, get, ref as firebaseRef } from "firebase/database";
+
+const dbRef = firebaseRef(database);
 
 const getPokemons = async () => {
-    const { data } = await getPokemonsAPI();
-    return data;
-}
+  let data = [];
+  try {
+    const snapshot = await get(child(dbRef, "/"));
+    if (snapshot.exists()) {
+      data = snapshot.val();
+    }
+    return snapshot.val();
+  } catch (error) {
+    console.error(error);
+  }
+
+  return data;
+};
 
 const usePokemons = () => {
-    const pokemons = ref<PokemonInfo[]>([]);
+  const pokemons = ref<PokemonInfo[]>([]);
 
-    const { isLoading, data } = useQuery(
-        ['pokemons'],
-        () => getPokemons()
-    );
+  const { isLoading, data } = useQuery(["pokemons"], () => getPokemons());
 
-    watch(data, () => {
-        if (data.value) pokemons.value = data.value;
-    }, { immediate: true })
+  watch(
+    data,
+    () => {
+      if (data.value) pokemons.value = data.value;
+    },
+    { immediate: true }
+  );
 
-    return {
-        isLoading,
-        pokemons
-    }
-}
+  return {
+    isLoading,
+    pokemons,
+  };
+};
 
 export default usePokemons;
