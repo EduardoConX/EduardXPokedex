@@ -1,4 +1,5 @@
 export interface PokemonInfo {
-    pokemon: string,
-    occurrences: string
+  pokemon: string;
+  occurrences: string;
+  pokedex: boolean;
 }

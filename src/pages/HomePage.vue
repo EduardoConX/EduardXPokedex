@@ -41,7 +41,7 @@ const countCondition = (condition: string) => {
         v-for="(pokemon, i) in pokemons"
         :key="pokemon.pokemon"
         :class="`flex flex-col border-4 ${
-          pokemon.occurrences == '-'
+          pokemon.pokedex
             ? 'border-yellow-500'
             : pokemon.occurrences == '0'
             ? 'border-red-500'
