@@ -1,8 +1,9 @@
 import { ref, watch } from "vue";
-import { useQuery } from "@tanstack/vue-query";
-import { child, get, ref as firebaseRef } from "firebase/database";
+import { useMutation, useQuery } from "@tanstack/vue-query";
+import { child, get, ref as firebaseRef, set } from "firebase/database";
 import { PokemonInfo } from "../interfaces/PokemonInfo";
 import { database } from "./../database/config";
+import router from "../router";
 
 const dbRef = firebaseRef(database);
 
@@ -19,6 +20,22 @@ const getPokemon = async (id: string) => {
   }
 
   return data;
+};
+
+const updatePokemon = async (
+  pokemon: PokemonInfo,
+  newOccurrences: number,
+  id: string
+) => {
+  const newPokemon = {
+    pokemon: pokemon.pokemon,
+    occurrences: pokemon.occurrences + newOccurrences,
+    pokedex: pokemon.pokedex,
+  };
+
+  await set(firebaseRef(database, id), {
+    ...newPokemon,
+  });
 };
 
 const usePokemon = (id: string) => {
@@ -39,6 +56,15 @@ const usePokemon = (id: string) => {
     }
   );
 
+  const updatePokemonMutation = useMutation(
+    (newOcurrences: number) => updatePokemon(pokemon.value, newOcurrences, id),
+    {
+      onSuccess() {
+        router.push("/");
+      },
+    }
+  );
+
   watch(
     data,
     () => {
@@ -49,8 +75,10 @@ const usePokemon = (id: string) => {
 
   return {
     pokemon,
+    updatePokemonMutation,
     isLoading,
     isError,
+    updatePokemon: updatePokemonMutation.mutate,
   };
 };
 
