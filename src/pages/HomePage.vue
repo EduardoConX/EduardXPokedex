@@ -5,16 +5,21 @@ const { isLoading, pokemons } = usePokemons();
 const countCondition = (condition: string) => {
   let filteredArray = [];
   if (condition == "catched") {
-    filteredArray = pokemons.value.filter((p) => p.occurrences != "0");
+    filteredArray = pokemons.value.filter(
+      (p) => p.occurrences != "0" || p.pokedex
+    );
   }
   if (condition == "repeated") {
     filteredArray = pokemons.value.filter(
       (p) =>
-        p.occurrences != "0" && p.occurrences != "-" && p.occurrences != "1"
+        (p.occurrences != "0" && p.occurrences != "1") ||
+        (p.occurrences == "1" && p.pokedex)
     );
   }
   if (condition == "pending") {
-    filteredArray = pokemons.value.filter((p) => p.occurrences == "0");
+    filteredArray = pokemons.value.filter(
+      (p) => p.occurrences == "0" && !p.pokedex
+    );
   }
 
   return filteredArray.length;
@@ -56,10 +61,13 @@ const countCondition = (condition: string) => {
           }.png`"
           :alt="`${i + 1}`"
         />
-        <p class="text-sm md:text-2xl text-white">
-          {{ i }} - {{ pokemon.pokemon }}
+        <RouterLink
+          class="text-sm md:text-2xl text-white"
+          :to="`/pokemon/${i}`"
+        >
+          {{ i + 1 }} - {{ pokemon.pokemon }}
           {{ `(${pokemon.occurrences})` }}
-        </p>
+        </RouterLink>
       </div>
     </div>
   </div>
