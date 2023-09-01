@@ -6,19 +6,19 @@ const countCondition = (condition: string) => {
   let filteredArray = [];
   if (condition == "catched") {
     filteredArray = pokemons.value.filter(
-      (p) => p.occurrences != "0" || p.pokedex
+      (p) => p.occurrences != 0 || p.pokedex
     );
   }
   if (condition == "repeated") {
     filteredArray = pokemons.value.filter(
       (p) =>
-        (p.occurrences != "0" && p.occurrences != "1") ||
-        (p.occurrences == "1" && p.pokedex)
+        (p.occurrences != 0 && p.occurrences != 1) ||
+        (p.occurrences == 1 && p.pokedex)
     );
   }
   if (condition == "pending") {
     filteredArray = pokemons.value.filter(
-      (p) => p.occurrences == "0" && !p.pokedex
+      (p) => p.occurrences == 0 && !p.pokedex
     );
   }
 
@@ -48,9 +48,9 @@ const countCondition = (condition: string) => {
         :class="`flex flex-col border-4 ${
           pokemon.pokedex
             ? 'border-yellow-500'
-            : pokemon.occurrences == '0'
+            : pokemon.occurrences == 0
             ? 'border-red-500'
-            : pokemon.occurrences == '1'
+            : pokemon.occurrences == 1
             ? 'border-green-500'
             : 'border-blue-500'
         }`"

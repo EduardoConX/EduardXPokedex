@@ -24,7 +24,7 @@ const getPokemon = async (id: string) => {
 const usePokemon = (id: string) => {
   const pokemon = ref<PokemonInfo>({
     pokemon: "",
-    occurrences: "",
+    occurrences: 0,
     pokedex: false,
   });
 
@@ -37,7 +37,7 @@ const usePokemon = (id: string) => {
         console.error(error);
       },
     }
-  ); 
+  );
 
   watch(
     data,
