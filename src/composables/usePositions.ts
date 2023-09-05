@@ -1,15 +1,15 @@
 import { ref, watch } from "vue";
 import { useQuery } from "@tanstack/vue-query";
-import { PokemonInfo } from "../interfaces/PokemonInfo";
+import { Position } from "../interfaces/Position";
 import { database } from "./../database/config";
 import { child, get, ref as firebaseRef } from "firebase/database";
 
 const dbRef = firebaseRef(database);
 
-const getPokemons = async () => {
+const getPositions = async () => {
   let data = [];
   try {
-    const snapshot = await get(child(dbRef, "/pokemon"));
+    const snapshot = await get(child(dbRef, "/positions"));
     if (snapshot.exists()) {
       data = snapshot.val();
     }
@@ -21,23 +21,23 @@ const getPokemons = async () => {
   return data;
 };
 
-const usePokemons = () => {
-  const pokemons = ref<PokemonInfo[]>([]);
+const usePositions = () => {
+  const positions = ref<Position[]>([]);
 
-  const { isLoading, data } = useQuery(["pokemons"], () => getPokemons());
+  const { isLoading, data } = useQuery(["positions"], () => getPositions());
 
   watch(
     data,
     () => {
-      if (data.value) pokemons.value = data.value;
+      if (data.value) positions.value = data.value;
     },
     { immediate: true }
   );
 
   return {
     isLoading,
-    pokemons,
+    positions,
   };
 };
 
-export default usePokemons;
+export default usePositions;

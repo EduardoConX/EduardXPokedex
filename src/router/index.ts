@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
 import HomePage from '../pages/HomePage.vue';
+import PositionsPage from '../pages/PositionsPage.vue';
 import PokemonPage from '../pages/PokemonPage.vue';
 
 const router = createRouter({
@@ -8,6 +9,9 @@ const router = createRouter({
     routes: [
         {
             path: '/', name: 'home', component: HomePage
+        },
+        {
+            path: '/posiciones', name: 'posiciones', component: PositionsPage
         },
         {
             path: '/pokemon/:id', name: 'pokemon', component: PokemonPage
