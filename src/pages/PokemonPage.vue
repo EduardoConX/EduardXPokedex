@@ -1,20 +1,12 @@
 <script setup lang="ts">
-import { ref } from "vue";
 import { useRoute } from "vue-router";
 
 import usePokemon from "../composables/usePokemon";
 
 const { params } = useRoute();
 const id = params.id;
-const { isLoading, pokemon, updatePokemonMutation } = usePokemon(id as string);
+const { isLoading, pokemon } = usePokemon(id as string);
 
-const newOccurrences = ref(0);
-
-const addOccurrence = () => newOccurrences.value++;
-
-const save = () => {
-  updatePokemonMutation.mutate(newOccurrences.value)
-}
 </script>
 
 <template>
@@ -31,14 +23,10 @@ const save = () => {
       :alt="`${+id + 1}`"
     />
     <p class="text-2xl">
-      Disponibles: {{ pokemon?.occurrences + newOccurrences }}
+      Disponibles: {{ pokemon?.occurrences }}
     </p>
     <p class="text-2xl">
       ¿En PC de EduardX? {{ pokemon?.pokedex ? "Si" : "No" }}
     </p>
-    <div class="w-1/3 mx-auto mt-4 flex flex-row justify-between">
-      <button @click="addOccurrence">Agregar Pokémon</button>
-      <button @click="save">Guardar</button>
-    </div>
   </div>
 </template>
