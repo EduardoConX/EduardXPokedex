@@ -41,7 +41,10 @@ const countCondition = (condition: string) => {
         <p class="text-2xl">Repetidos: {{ countCondition("repeated") }}</p>
       </div>
     </div>
-    <div class="grid grid-cols-3 md:grid-cols-6 gap-4">
+    <RouterLink class="text-sm md:text-2xl text-white" to="/posiciones">
+      Ver ordenados por captura
+    </RouterLink>
+    <div class="grid grid-cols-3 md:grid-cols-6 gap-4 mt-4">
       <div
         v-for="(pokemon, i) in pokemons"
         :key="pokemon.pokemon"

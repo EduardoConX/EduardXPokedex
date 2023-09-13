@@ -8,7 +8,10 @@ const { isLoading, positions } = usePositions();
   <h1 class="text-3xl md:text-6xl font-bold mb-4">Pokedex de EduardX</h1>
   <p v-if="isLoading">Cargando...</p>
   <div v-else>
-    <div class="grid grid-cols-3 md:grid-cols-6 gap-4">
+    <RouterLink class="text-sm md:text-2xl text-white" to="/">
+      Ver por posición en la Pokedex Nacional
+    </RouterLink>
+    <div class="grid grid-cols-3 md:grid-cols-6 gap-4 mt-4">
       <div
         v-for="position in positions"
         :key="position.position"
