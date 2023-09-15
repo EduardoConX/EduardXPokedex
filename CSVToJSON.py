@@ -1024,7 +1024,8 @@ for x in range(1010):
   new_info = {
         "pokemon": pokemonList[x],
         "pokedex": x < 154,
-        "occurrences": len([p for p in data if p["id"] == x + 1])
+        "occurrences": len([p for p in data if p["id"] == x + 1]),
+        "position": x + 1
     }
   
   pokemon.append(new_info)

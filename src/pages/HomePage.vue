@@ -30,7 +30,10 @@ const countCondition = (condition: string) => {
   <h1 class="text-3xl md:text-6xl font-bold mb-4">Pokedex de EduardX</h1>
   <p v-if="isLoading">Cargando...</p>
   <div v-else>
-    <div class="flex w-full mb-4">
+    <RouterLink class="text-sm md:text-2xl text-white" to="/posiciones">
+      Ver ordenados por captura
+    </RouterLink>
+    <div class="flex w-full my-4">
       <div class="w-1/3">
         <p class="text-2xl">Atrapados: {{ countCondition("catched") }}</p>
       </div>
@@ -41,12 +44,9 @@ const countCondition = (condition: string) => {
         <p class="text-2xl">Repetidos: {{ countCondition("repeated") }}</p>
       </div>
     </div>
-    <RouterLink class="text-sm md:text-2xl text-white" to="/posiciones">
-      Ver ordenados por captura
-    </RouterLink>
     <div class="grid grid-cols-3 md:grid-cols-6 gap-4 mt-4">
       <div
-        v-for="(pokemon, i) in pokemons"
+        v-for="pokemon in pokemons"
         :key="pokemon.pokemon"
         :class="`flex flex-col border-4 ${
           pokemon.pokedex
@@ -59,16 +59,14 @@ const countCondition = (condition: string) => {
         }`"
       >
         <img
-          :src="`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${
-            i + 1
-          }.png`"
-          :alt="`${i + 1}`"
+          :src="`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.position}.png`"
+          :alt="`${pokemon.pokemon}`"
         />
         <RouterLink
           class="text-sm md:text-2xl text-white"
-          :to="`/pokemon/${i}`"
+          :to="`/pokemon/${pokemon.position - 1}`"
         >
-          {{ i + 1 }} - {{ pokemon.pokemon }}
+          {{ pokemon.position }} - {{ pokemon.pokemon }}
           {{ `(${pokemon.occurrences})` }}
         </RouterLink>
       </div>
