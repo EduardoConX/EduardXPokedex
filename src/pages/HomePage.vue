@@ -3,6 +3,9 @@ import { computed, ref } from "vue";
 import usePokemons from "../composables/usePokemons";
 const { isLoading, pokemons } = usePokemons();
 
+const filter = ref("");
+const search = ref("");
+
 const countCondition = (condition: string) => {
   let filteredArray = [];
   if (condition == "catched") {
@@ -26,8 +29,6 @@ const countCondition = (condition: string) => {
   return filteredArray.length;
 };
 
-const filter = ref("");
-
 const filteredPokemons = computed(() => {
   if (filter.value === "catched") {
     return pokemons.value.filter((p) => p.occurrences !== 0 || p.pokedex);
@@ -46,6 +47,16 @@ const filteredPokemons = computed(() => {
   }
 
   return pokemons.value;
+});
+
+const reFilteredPokemons = computed(() => {
+  if (search.value !== "") {
+    return filteredPokemons.value.filter((p) =>
+      p.pokemon.toLocaleLowerCase().includes(search.value.toLocaleLowerCase())
+    );
+  }
+
+  return filteredPokemons.value;
 });
 </script>
 
@@ -67,15 +78,18 @@ const filteredPokemons = computed(() => {
         <p class="text-2xl">Repetidos: {{ countCondition("repeated") }}</p>
       </div>
     </div>
-    <select name="filter" v-model="filter">
-      <option value="">Mostrar todos</option>
-      <option value="catched">Mostrar atrapados</option>
-      <option value="pending">Mostrar pendientes</option>
-      <option value="repeated">Mostrar repetidos</option>
-    </select>
+    <div class="flex justify-around">
+      <select name="filter" v-model="filter">
+        <option value="">Mostrar todos</option>
+        <option value="catched">Mostrar atrapados</option>
+        <option value="pending">Mostrar pendientes</option>
+        <option value="repeated">Mostrar repetidos</option>
+      </select>
+      <input type="text" name="search" v-model="search" />
+    </div>
     <div class="grid grid-cols-3 md:grid-cols-6 gap-4 mt-4">
       <div
-        v-for="pokemon in filteredPokemons"
+        v-for="pokemon in reFilteredPokemons"
         :key="pokemon.pokemon"
         :class="`flex flex-col border-4 ${
           pokemon.pokedex
