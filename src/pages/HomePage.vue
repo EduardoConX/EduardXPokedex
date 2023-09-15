@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { computed, ref } from "vue";
 import usePokemons from "../composables/usePokemons";
 const { isLoading, pokemons } = usePokemons();
 
@@ -24,6 +25,28 @@ const countCondition = (condition: string) => {
 
   return filteredArray.length;
 };
+
+const filter = ref("");
+
+const filteredPokemons = computed(() => {
+  if (filter.value === "catched") {
+    return pokemons.value.filter((p) => p.occurrences !== 0 || p.pokedex);
+  }
+
+  if (filter.value === "pending") {
+    return pokemons.value.filter((p) => p.occurrences === 0 && !p.pokedex);
+  }
+
+  if (filter.value === "repeated") {
+    return pokemons.value.filter(
+      (p) =>
+        (p.occurrences !== 0 && p.occurrences !== 1) ||
+        (p.occurrences === 1 && p.pokedex)
+    );
+  }
+
+  return pokemons.value;
+});
 </script>
 
 <template>
@@ -44,9 +67,15 @@ const countCondition = (condition: string) => {
         <p class="text-2xl">Repetidos: {{ countCondition("repeated") }}</p>
       </div>
     </div>
+    <select name="filter" v-model="filter">
+      <option value="">Mostrar todos</option>
+      <option value="catched">Mostrar atrapados</option>
+      <option value="pending">Mostrar pendientes</option>
+      <option value="repeated">Mostrar repetidos</option>
+    </select>
     <div class="grid grid-cols-3 md:grid-cols-6 gap-4 mt-4">
       <div
-        v-for="pokemon in pokemons"
+        v-for="pokemon in filteredPokemons"
         :key="pokemon.pokemon"
         :class="`flex flex-col border-4 ${
           pokemon.pokedex
