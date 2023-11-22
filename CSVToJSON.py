@@ -1,3 +1,4 @@
+import csv 
 import json
 import pandas as pd
 
@@ -1014,6 +1015,13 @@ pokemonList = [
     "Iron Leaves"
 ]
 
+with open('pokemon.csv', 'r') as csv_file:
+  csv_reader = csv.DictReader(csv_file)
+  data = [row for row in csv_reader]
+
+with open('positions.json', 'w') as json_file:
+  json.dump(data, json_file, indent=4)
+
 f = open('positions.json')
  
 data = json.load(f)
@@ -1024,7 +1032,7 @@ for x in range(1010):
   new_info = {
         "pokemon": pokemonList[x],
         "pokedex": x < 154,
-        "occurrences": len([p for p in data if p["id"] == x + 1]),
+        "occurrences": len([p for p in data if int(p["id"]) == x + 1]),
         "position": x + 1
     }
   

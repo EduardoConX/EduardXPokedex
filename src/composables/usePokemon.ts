@@ -26,6 +26,7 @@ const usePokemon = (id: string) => {
     pokemon: "",
     occurrences: 0,
     pokedex: false,
+    position: 0
   });
 
   const { isLoading, data, isError } = useQuery(
