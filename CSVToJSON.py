@@ -1,6 +1,5 @@
 import csv 
 import json
-import pandas as pd
 
 pokemonList = [
     "Bulbasaur",
@@ -1031,7 +1030,7 @@ pokemon = []
 for x in range(1010):
   new_info = {
         "pokemon": pokemonList[x],
-        "pokedex": x < 154,
+        "pokedex": x < 156,
         "occurrences": len([p for p in data if int(p["id"]) == x + 1]),
         "position": x + 1
     }
