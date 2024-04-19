@@ -101,17 +101,17 @@ const reFilteredPokemons = computed(() => {
             : 'border-blue-500'
         }`"
       >
-        <img
-          :src="`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.position}.png`"
-          :alt="`${pokemon.pokemon}`"
-        />
-        <RouterLink
-          class="text-sm md:text-2xl text-white"
-          :to="`/pokemon/${pokemon.position - 1}`"
-        >
+        <RouterLink :to="`/pokemon/${pokemon.position - 1}`">
+          <img
+            :src="`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.position}.png`"
+            :alt="`${pokemon.pokemon}`"
+            class="w-full"
+          />
+        </RouterLink>
+        <p class="text-sm md:text-2xl text-white">
           {{ pokemon.position }} - {{ pokemon.pokemon }}
           {{ `(${pokemon.occurrences})` }}
-        </RouterLink>
+        </p>
       </div>
     </div>
   </div>
