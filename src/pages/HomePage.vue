@@ -87,7 +87,7 @@ const reFilteredPokemons = computed(() => {
       </select>
       <input type="text" name="search" v-model="search" />
     </div>
-    <div class="grid grid-cols-3 md:grid-cols-6 gap-4 mt-4">
+    <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4 mt-4">
       <div
         v-for="pokemon in reFilteredPokemons"
         :key="pokemon.pokemon"
@@ -108,8 +108,13 @@ const reFilteredPokemons = computed(() => {
             class="w-full"
           />
         </RouterLink>
+        <p class="text-sm md:text-md text-gray-300">
+          N° {{ pokemon.position }}
+        </p>
         <p class="text-sm md:text-2xl text-white">
-          {{ pokemon.position }} - {{ pokemon.pokemon }}
+          {{ pokemon.pokemon }}
+        </p>
+        <p class="text-sm md:text-md text-gray-300 mb-2">
           {{ `(${pokemon.occurrences})` }}
         </p>
       </div>
