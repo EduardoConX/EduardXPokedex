@@ -1,3 +1,4 @@
+import sys
 import csv 
 import json
 
@@ -1026,11 +1027,12 @@ f = open('positions.json')
 data = json.load(f)
  
 pokemon = []
+last_pokemon = int(sys.argv[1])
 
 for x in range(1010):
   new_info = {
         "pokemon": pokemonList[x],
-        "pokedex": x < 156,
+        "pokedex": x < last_pokemon,
         "occurrences": len([p for p in data if int(p["id"]) == x + 1]),
         "position": x + 1
     }
