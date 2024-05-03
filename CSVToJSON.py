@@ -1012,7 +1012,14 @@ pokemonList = [
     "Koraidon",
     "Miraidon",
     "Walking Wake",
-    "Iron Leaves"
+    "Iron Leaves",
+    "Dipplin",
+    "Poltchageist",
+    "Sinistcha",
+    "Okidogi",
+    "Munkidori",
+    "Fezandipiti",
+    "Ogerpon"
 ]
 
 with open('pokemon.csv', 'r') as csv_file:
@@ -1029,7 +1036,7 @@ data = json.load(f)
 pokemon = []
 last_pokemon = int(sys.argv[1])
 
-for x in range(1010):
+for x in range(1017):
   new_info = {
         "pokemon": pokemonList[x],
         "pokedex": x < last_pokemon,
