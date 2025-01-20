@@ -1,6 +1,8 @@
 import sys
 import csv 
 import json
+import firebase_admin
+from firebase_admin import credentials, db
 
 pokemonList = [
     "Bulbasaur",
@@ -1048,5 +1050,22 @@ for x in range(1017):
  
 with open("pokemon.json", "w") as json_file:
     json.dump(pokemon, json_file, indent=4)
-# Closing file
+
 f.close()
+
+cred = credentials.Certificate('eduardxpokedex-firebase.json')
+firebase_admin.initialize_app(cred, {
+    'databaseURL': ''  
+})
+
+with open('pokemon.json', 'r') as file:
+    json_data = json.load(file)
+
+ref = db.reference('/pokemon')
+ref.set(json_data)
+
+with open('positions.json', 'r') as file:
+    json_data = json.load(file)
+
+ref = db.reference('/positions')
+ref.set(json_data)
