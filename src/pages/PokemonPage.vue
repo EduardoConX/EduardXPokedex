@@ -1,16 +1,23 @@
 <script setup lang="ts">
+import { ref, watch } from "vue";
 import { useRoute } from "vue-router";
 
 import usePokemon from "../composables/usePokemon";
 import usePositions from "../composables/usePositions";
+import { Position } from "../interfaces/Position";
 
 const { params } = useRoute();
 const id = params.id;
 const { isLoading, pokemon } = usePokemon(id as string);
 const { isLoading: isLoadingPositions, positions } = usePositions();
-const ocurrences = positions.value.filter(
-  (position) => position.id == Number(id) + 1
-);
+const ocurrences = ref<Position[]>([]);
+watch(positions, (newValue, _oldValue) => {
+  if (newValue && newValue.length > 0) {
+    ocurrences.value = newValue.filter(
+      (position) => position.id == Number(id) + 1
+    );
+  }
+});
 </script>
 
 <template>
