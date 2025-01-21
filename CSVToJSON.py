@@ -1031,9 +1031,15 @@ with open('pokemon.csv', 'r') as csv_file:
 with open('positions.json', 'w') as json_file:
   json.dump(data, json_file, indent=4)
 
-f = open('positions.json')
- 
-data = json.load(f)
+try:
+    with open('positions.json', 'r') as file:
+        data = json.load(file)
+except FileNotFoundError:
+    print("Error: 'positions.json' file not found.")
+    sys.exit(1)
+except json.JSONDecodeError:
+    print("Error: Failed to decode JSON.")
+    sys.exit(1)
  
 pokemon = []
 last_pokemon = int(sys.argv[1])
@@ -1050,8 +1056,6 @@ for x in range(1017):
  
 with open("pokemon.json", "w") as json_file:
     json.dump(pokemon, json_file, indent=4)
-
-f.close()
 
 cred = credentials.Certificate('eduardxpokedex-firebase.json')
 firebase_admin.initialize_app(cred, {
