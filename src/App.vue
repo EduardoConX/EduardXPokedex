@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { ref } from "vue";
 
+import usePokemons from "./composables/usePokemons";
+const { isLoading, pokemons, isError, error } = usePokemons();
+
 const isDark = ref(false);
 const toggleDarkMode = () => {
   isDark.value = !isDark.value;
@@ -34,6 +37,16 @@ const toggleDarkMode = () => {
           placeholder="Buscar Pokémon"
           class="w-full max-w-md mx-auto block px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 transition-colors"
         />
+      </div>
+
+      <div
+        v-if="isLoading"
+        class="text-center text-xl text-gray-900 dark:text-white"
+      >
+        Cargando...
+      </div>
+      <div v-else-if="isError" class="text-center text-red-500 text-xl">
+        {{ error }}
       </div>
     </div>
   </div>

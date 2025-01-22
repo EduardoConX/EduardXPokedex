@@ -24,7 +24,7 @@ const getPokemons = async () => {
 const usePokemons = () => {
   const pokemons = ref<PokemonInfo[]>([]);
 
-  const { isLoading, data } = useQuery({
+  const { isLoading, data, isError, error } = useQuery({
     queryKey: ["pokemons"],
     queryFn: () => getPokemons(),
   });
@@ -39,6 +39,8 @@ const usePokemons = () => {
   return {
     isLoading,
     pokemons,
+    isError,
+    error
   };
 };
 
