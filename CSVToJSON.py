@@ -1021,7 +1021,15 @@ pokemonList = [
     "Okidogi",
     "Munkidori",
     "Fezandipiti",
-    "Ogerpon"
+    "Ogerpon",
+    "Archaludon",
+    "Hydrapple",
+    "Flamariete",
+    "Electrofuria",
+    "Ferromole",
+    "Ferrotesta",
+    "Terapagos",
+    "Pecharunt"
 ]
 
 with open('pokemon.csv', 'r') as csv_file:
@@ -1044,7 +1052,7 @@ except json.JSONDecodeError:
 pokemon = []
 last_pokemon = int(sys.argv[1])
 
-for x in range(1017):
+for x in range(1025):
   new_info = {
         "pokemon": pokemonList[x],
         "pokedex": x < last_pokemon,
@@ -1059,7 +1067,7 @@ with open("pokemon.json", "w") as json_file:
 
 cred = credentials.Certificate('eduardxpokedex-firebase.json')
 firebase_admin.initialize_app(cred, {
-    'databaseURL': ''  
+    'databaseURL': 'https://eduardxpokedex-default-rtdb.firebaseio.com'  
 })
 
 with open('pokemon.json', 'r') as file:
