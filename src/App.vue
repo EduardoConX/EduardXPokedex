@@ -2,6 +2,7 @@
 import { ref } from "vue";
 
 import usePokemons from "./composables/usePokemons";
+import PokemonCard from "./components/PokemonCard.vue";
 const { isLoading, pokemons, isError, error } = usePokemons();
 
 const isDark = ref(false);
@@ -47,6 +48,16 @@ const toggleDarkMode = () => {
       </div>
       <div v-else-if="isError" class="text-center text-red-500 text-xl">
         {{ error }}
+      </div>
+      <div
+        v-else
+        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6"
+      >
+        <PokemonCard
+          v-for="pokemon in pokemons"
+          :key="pokemon.position"
+          :pokemon="pokemon"
+        />
       </div>
     </div>
   </div>
