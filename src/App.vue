@@ -1,16 +1,25 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed, ref } from "vue";
 
 import usePokemons from "./composables/usePokemons";
 import PokemonCard from "./components/PokemonCard.vue";
 const { isLoading, pokemons, isError, error } = usePokemons();
 
 const isDark = ref(false);
+const searchQuery = ref("");
+
 const toggleDarkMode = () => {
   isDark.value = !isDark.value;
   document.documentElement.classList.toggle("dark");
   localStorage.setItem("darkMode", isDark.value.toString());
 };
+
+const filteredPokemons = computed(() => {
+  const query = searchQuery.value.toLowerCase();
+  return pokemons.value.filter((pokemon) =>
+    pokemon.pokemon.toLowerCase().includes(query)
+  );
+});
 </script>
 
 <template>
@@ -34,6 +43,7 @@ const toggleDarkMode = () => {
 
       <div class="mb-8">
         <input
+          v-model="searchQuery"
           type="text"
           placeholder="Buscar Pokémon"
           class="w-full max-w-md mx-auto block px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 transition-colors"
@@ -54,7 +64,7 @@ const toggleDarkMode = () => {
         class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6"
       >
         <PokemonCard
-          v-for="pokemon in pokemons"
+          v-for="pokemon in filteredPokemons"
           :key="pokemon.position"
           :pokemon="pokemon"
         />
