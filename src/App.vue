@@ -9,6 +9,12 @@ const isDark = ref(false);
 const searchQuery = ref("");
 const filter = ref("");
 
+enum status {
+  catched = "catched",
+  pending = "pending",
+  repeated = "repeated",
+}
+
 const toggleDarkMode = () => {
   isDark.value = !isDark.value;
   document.documentElement.classList.toggle("dark");
@@ -40,7 +46,7 @@ const filteredPokemons = computed(() => {
   return searchedPokemons;
 });
 
-const countCondition = (condition: string) => {
+const countCondition = (condition: status) => {
   if (condition == "catched")
     return pokemons.value.filter((p) => p.occurrences != 0 || p.pokedex).length;
   if (condition == "repeated")
@@ -97,18 +103,24 @@ const countCondition = (condition: string) => {
 
         <div class="flex w-full my-4">
           <div class="w-1/3">
-            <p class="text-center text-lg font-semibold text-gray-600 dark:text-gray-300">
-              Atrapados: {{ countCondition("catched") }}
+            <p
+              class="text-center text-lg font-semibold text-gray-600 dark:text-gray-300"
+            >
+              Atrapados: {{ countCondition(status.catched) }}
             </p>
           </div>
           <div class="w-1/3">
-            <p class="text-center text-lg font-semibold text-gray-600 dark:text-gray-300">
-              Pendientes: {{ countCondition("pending") }}
+            <p
+              class="text-center text-lg font-semibold text-gray-600 dark:text-gray-300"
+            >
+              Pendientes: {{ countCondition(status.pending) }}
             </p>
           </div>
           <div class="w-1/3">
-            <p class="text-center text-lg font-semibold text-gray-600 dark:text-gray-300">
-              Repetidos: {{ countCondition("repeated") }}
+            <p
+              class="text-center text-lg font-semibold text-gray-600 dark:text-gray-300"
+            >
+              Repetidos: {{ countCondition(status.repeated) }}
             </p>
           </div>
         </div>
