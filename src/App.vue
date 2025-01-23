@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
-
 import usePokemons from "./composables/usePokemons";
 import PokemonCard from "./components/PokemonCard.vue";
+import StatusCount from "./components/StatusCount.vue";
 const { isLoading, pokemons, isError, error } = usePokemons();
 
 const isDark = ref(false);
@@ -14,6 +14,21 @@ enum status {
   pending = "pending",
   repeated = "repeated",
 }
+
+const statusToCount = [
+  {
+    status: "Atrapados",
+    count: computed(() => countCondition(status.catched)),
+  },
+  {
+    status: "Pendientes",
+    count: computed(() => countCondition(status.pending)),
+  },
+  {
+    status: "Repetidos",
+    count: computed(() => countCondition(status.repeated)),
+  },
+];
 
 const toggleDarkMode = () => {
   isDark.value = !isDark.value;
@@ -100,29 +115,13 @@ const countCondition = (condition: status) => {
             <option value="repeated">Mostrar repetidos</option>
           </select>
         </div>
-
         <div class="flex w-full my-4">
-          <div class="w-1/3">
-            <p
-              class="text-center text-lg font-semibold text-gray-600 dark:text-gray-300"
-            >
-              Atrapados: {{ countCondition(status.catched) }}
-            </p>
-          </div>
-          <div class="w-1/3">
-            <p
-              class="text-center text-lg font-semibold text-gray-600 dark:text-gray-300"
-            >
-              Pendientes: {{ countCondition(status.pending) }}
-            </p>
-          </div>
-          <div class="w-1/3">
-            <p
-              class="text-center text-lg font-semibold text-gray-600 dark:text-gray-300"
-            >
-              Repetidos: {{ countCondition(status.repeated) }}
-            </p>
-          </div>
+          <StatusCount
+            v-for="status in statusToCount"
+            :key="status.status"
+            :status-text="status.status"
+            :status-count="status.count.value"
+          />
         </div>
       </div>
 
