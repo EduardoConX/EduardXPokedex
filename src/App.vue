@@ -7,6 +7,7 @@ const { isLoading, pokemons, isError, error } = usePokemons();
 
 const isDark = ref(false);
 const searchQuery = ref("");
+const filter = ref("");
 
 const toggleDarkMode = () => {
   isDark.value = !isDark.value;
@@ -16,9 +17,27 @@ const toggleDarkMode = () => {
 
 const filteredPokemons = computed(() => {
   const query = searchQuery.value.toLowerCase();
-  return pokemons.value.filter((pokemon) =>
+  const searchedPokemons = pokemons.value.filter((pokemon) =>
     pokemon.pokemon.toLowerCase().includes(query)
   );
+
+  if (filter.value === "catched") {
+    return searchedPokemons.filter((p) => p.occurrences !== 0 || p.pokedex);
+  }
+
+  if (filter.value === "pending") {
+    return searchedPokemons.filter((p) => p.occurrences === 0 && !p.pokedex);
+  }
+
+  if (filter.value === "repeated") {
+    return searchedPokemons.filter(
+      (p) =>
+        (p.occurrences !== 0 && p.occurrences !== 1) ||
+        (p.occurrences === 1 && p.pokedex)
+    );
+  }
+
+  return searchedPokemons;
 });
 </script>
 
@@ -41,13 +60,24 @@ const filteredPokemons = computed(() => {
         </button>
       </div>
 
-      <div class="mb-8">
-        <input
-          v-model="searchQuery"
-          type="text"
-          placeholder="Buscar Pokémon"
-          class="w-full max-w-md mx-auto block px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 transition-colors"
-        />
+      <div class="mb-8 space-y-4">
+        <div class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+          <input
+            v-model="searchQuery"
+            type="text"
+            placeholder="Buscar Pokémon"
+            class="flex-1 px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 transition-colors"
+          />
+          <select
+            v-model="filter"
+            class="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 transition-colors capitalize"
+          >
+            <option value="">Mostrar todos</option>
+            <option value="catched">Mostrar atrapados</option>
+            <option value="pending">Mostrar pendientes</option>
+            <option value="repeated">Mostrar repetidos</option>
+          </select>
+        </div>        
       </div>
 
       <div
