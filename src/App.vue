@@ -39,6 +39,22 @@ const filteredPokemons = computed(() => {
 
   return searchedPokemons;
 });
+
+const countCondition = (condition: string) => {
+  if (condition == "catched")
+    return pokemons.value.filter((p) => p.occurrences != 0 || p.pokedex).length;
+  if (condition == "repeated")
+    return pokemons.value.filter(
+      (p) =>
+        (p.occurrences != 0 && p.occurrences != 1) ||
+        (p.occurrences == 1 && p.pokedex)
+    ).length;
+  if (condition == "pending")
+    return pokemons.value.filter((p) => p.occurrences == 0 && !p.pokedex)
+      .length;
+
+  return 0;
+};
 </script>
 
 <template>
@@ -77,7 +93,25 @@ const filteredPokemons = computed(() => {
             <option value="pending">Mostrar pendientes</option>
             <option value="repeated">Mostrar repetidos</option>
           </select>
-        </div>        
+        </div>
+
+        <div class="flex w-full my-4">
+          <div class="w-1/3">
+            <p class="text-center text-lg font-semibold text-gray-600 dark:text-gray-300">
+              Atrapados: {{ countCondition("catched") }}
+            </p>
+          </div>
+          <div class="w-1/3">
+            <p class="text-center text-lg font-semibold text-gray-600 dark:text-gray-300">
+              Pendientes: {{ countCondition("pending") }}
+            </p>
+          </div>
+          <div class="w-1/3">
+            <p class="text-center text-lg font-semibold text-gray-600 dark:text-gray-300">
+              Repetidos: {{ countCondition("repeated") }}
+            </p>
+          </div>
+        </div>
       </div>
 
       <div
