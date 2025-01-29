@@ -1,9 +1,11 @@
 <script setup lang="ts">
+import { useRouter } from "vue-router";
 import type { PokemonInfo } from "../interfaces/PokemonInfo";
-
-defineProps<{
+const props = defineProps<{
   pokemon: PokemonInfo;
 }>();
+
+const router = useRouter();
 
 const getTypeColor = (occurrences: number) => {
   const colors: Record<string, string> = {
@@ -12,13 +14,18 @@ const getTypeColor = (occurrences: number) => {
   };
   return colors[occurrences] || "ring-blue-400";
 };
+
+const seePokemon = () => {
+  router.push(`/pokemon/${props.pokemon.position}`);
+};
 </script>
 
 <template>
   <div
+    @click="seePokemon"
     :class="[
       pokemon.pokedex ? 'ring-yellow-400' : getTypeColor(pokemon.occurrences),
-      'bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 hover:shadow-xl transition-all ring-4',
+      'bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 hover:shadow-xl transition-all ring-4 cursor-pointer',
     ]"
   >
     <img
