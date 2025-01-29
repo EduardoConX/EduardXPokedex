@@ -2,12 +2,21 @@
 import { ref } from "vue";
 import { RouterView } from "vue-router";
 
-const isDark = ref(false);
+if (localStorage.getItem("ep-darkMode") === null) {
+  localStorage.setItem("ep-darkMode", "false");
+}
+
+const isDarkMode = localStorage.getItem("ep-darkMode") === "true";
+const isDark = ref(isDarkMode);
+
+if (isDark.value) {
+  document.documentElement.classList.add("dark");
+}
 
 const toggleDarkMode = () => {
   isDark.value = !isDark.value;
   document.documentElement.classList.toggle("dark");
-  localStorage.setItem("darkMode", isDark.value.toString());
+  localStorage.setItem("ep-darkMode", isDark.value.toString());
 };
 </script>
 
