@@ -18,6 +18,18 @@ watch(positions, (newValue, _oldValue) => {
     ocurrences.value = newValue.filter((position) => position.id == +id);
   }
 });
+
+const searchPokemon = () => {
+  navigator.clipboard.writeText(
+    `@Pokétwo#8236 m s --n ${pokemon.value.pokemon} --o price`
+  );
+};
+
+const tradePokemon = (position: number) => {
+  navigator.clipboard.writeText(
+    `@Pokétwo#8236 trade add ${position}`
+  );
+};
 </script>
 
 <template>
@@ -61,13 +73,25 @@ watch(positions, (newValue, _oldValue) => {
           <div class="grid grid-cols-2 gap-4 text-gray-700 dark:text-gray-300">
             <div>
               <h2 class="text-xl font-semibold mb-2">Disponibles:</h2>
-              <p v-if="!ocurrences.length">No disponible</p>
+              <div v-if="!ocurrences.length">
+                <span class="mr-4">No disponible</span>
+                <span @click="searchPokemon" class="font-bold cursor-pointer"
+                  >(Buscar en el mercado)</span
+                >
+              </div>
               <ul v-else>
                 <li v-for="ocurrence in ocurrences" class="text-xl">
-                  - Nivel: {{ ocurrence.level }} Posición:
-                  {{ ocurrence.position }}
+                  <span class="mr-4"
+                    >- Nivel: {{ ocurrence.level }} Posición:
+                    {{ ocurrence.position }}</span
+                  >
+                  <span
+                    @click="() => tradePokemon(ocurrence.position)"
+                    class="font-bold cursor-pointer"
+                    >(Agregar al trade)</span
+                  >
                 </li>
-              </ul>              
+              </ul>
             </div>
           </div>
         </div>
