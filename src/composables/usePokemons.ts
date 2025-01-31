@@ -1,6 +1,6 @@
 import { ref, watch } from "vue";
 import { useQuery } from "@tanstack/vue-query";
-import { PokemonInfo } from "../interfaces/PokemonInfo";
+import type { PokemonInfo } from "../interfaces/PokemonInfo";
 import { database } from "./../database/config";
 import { child, get, ref as firebaseRef } from "firebase/database";
 
@@ -24,8 +24,10 @@ const getPokemons = async () => {
 const usePokemons = () => {
   const pokemons = ref<PokemonInfo[]>([]);
 
-  const { isLoading, data } = useQuery(["pokemons"], () => getPokemons());
-
+  const { isLoading, data, isError, error } = useQuery({
+    queryKey: ["pokemons"],
+    queryFn: () => getPokemons(),
+  });
   watch(
     data,
     () => {
@@ -37,6 +39,8 @@ const usePokemons = () => {
   return {
     isLoading,
     pokemons,
+    isError,
+    error
   };
 };
 

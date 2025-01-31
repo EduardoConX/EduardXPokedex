@@ -1,15 +1,16 @@
 import { ref, watch } from "vue";
 import { useQuery } from "@tanstack/vue-query";
 import { child, get, ref as firebaseRef } from "firebase/database";
-import { PokemonInfo } from "../interfaces/PokemonInfo";
+import type { PokemonInfo } from "../interfaces/PokemonInfo";
 import { database } from "./../database/config";
 
 const dbRef = firebaseRef(database);
 
 const getPokemon = async (id: string) => {
   let data = [];
+  const realId = parseInt(id) - 1;
   try {
-    const snapshot = await get(child(dbRef, "/pokemon/" + id));
+    const snapshot = await get(child(dbRef, "/pokemon/" + realId));
     if (snapshot.exists()) {
       data = snapshot.val();
     }
@@ -26,19 +27,13 @@ const usePokemon = (id: string) => {
     pokemon: "",
     occurrences: 0,
     pokedex: false,
-    position: 0
+    position: 0,
   });
 
-  const { isLoading, data, isError } = useQuery(
-    ["pokemon", id],
-    () => getPokemon(id),
-    {
-      retry: false,
-      onError(error: any) {
-        console.error(error);
-      },
-    }
-  );
+  const { isLoading, data, isError, error } = useQuery({
+    queryKey: ["pokemon", id],
+    queryFn: () => getPokemon(id),
+  });
 
   watch(
     data,
@@ -52,6 +47,7 @@ const usePokemon = (id: string) => {
     pokemon,
     isLoading,
     isError,
+    error,
   };
 };
 

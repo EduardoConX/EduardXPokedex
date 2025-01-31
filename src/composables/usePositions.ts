@@ -1,6 +1,6 @@
 import { ref, watch } from "vue";
 import { useQuery } from "@tanstack/vue-query";
-import { Position } from "../interfaces/Position";
+import type { Position } from "../interfaces/Position";
 import { database } from "./../database/config";
 import { child, get, ref as firebaseRef } from "firebase/database";
 
@@ -24,7 +24,10 @@ const getPositions = async () => {
 const usePositions = () => {
   const positions = ref<Position[]>([]);
 
-  const { isLoading, data } = useQuery(["positions"], () => getPositions());
+  const { isLoading, data } = useQuery({
+    queryKey: ["positions"],
+    queryFn: () => getPositions(),
+  });
 
   watch(
     data,

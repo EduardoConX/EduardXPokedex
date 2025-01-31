@@ -1,123 +1,122 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import usePokemons from "../composables/usePokemons";
-const { isLoading, pokemons } = usePokemons();
+import PokemonCard from "../components/PokemonCard.vue";
+import StatusCount from "../components/StatusCount.vue";
+const { isLoading, pokemons, isError, error } = usePokemons();
 
+const searchQuery = ref("");
 const filter = ref("");
-const search = ref("");
 
-const countCondition = (condition: string) => {
-  let filteredArray = [];
-  if (condition == "catched") {
-    filteredArray = pokemons.value.filter(
-      (p) => p.occurrences != 0 || p.pokedex
-    );
-  }
-  if (condition == "repeated") {
-    filteredArray = pokemons.value.filter(
-      (p) =>
-        (p.occurrences != 0 && p.occurrences != 1) ||
-        (p.occurrences == 1 && p.pokedex)
-    );
-  }
-  if (condition == "pending") {
-    filteredArray = pokemons.value.filter(
-      (p) => p.occurrences == 0 && !p.pokedex
-    );
-  }
+enum status {
+  catched = "catched",
+  pending = "pending",
+  repeated = "repeated",
+}
 
-  return filteredArray.length;
-};
+const statusToCount = [
+  {
+    status: "Atrapados",
+    count: computed(() => countCondition(status.catched)),
+  },
+  {
+    status: "Pendientes",
+    count: computed(() => countCondition(status.pending)),
+  },
+  {
+    status: "Repetidos",
+    count: computed(() => countCondition(status.repeated)),
+  },
+];
 
 const filteredPokemons = computed(() => {
+  const query = searchQuery.value.toLowerCase();
+  const searchedPokemons = pokemons.value.filter((pokemon) =>
+    pokemon.pokemon.toLowerCase().includes(query)
+  );
+
   if (filter.value === "catched") {
-    return pokemons.value.filter((p) => p.occurrences !== 0 || p.pokedex);
+    return searchedPokemons.filter((p) => p.occurrences !== 0 || p.pokedex);
   }
 
   if (filter.value === "pending") {
-    return pokemons.value.filter((p) => p.occurrences === 0 && !p.pokedex);
+    return searchedPokemons.filter((p) => p.occurrences === 0 && !p.pokedex);
   }
 
   if (filter.value === "repeated") {
-    return pokemons.value.filter(
+    return searchedPokemons.filter(
       (p) =>
         (p.occurrences !== 0 && p.occurrences !== 1) ||
         (p.occurrences === 1 && p.pokedex)
     );
   }
 
-  return pokemons.value;
+  return searchedPokemons;
 });
 
-const reFilteredPokemons = computed(() => {
-  if (search.value !== "") {
-    return filteredPokemons.value.filter((p) =>
-      p.pokemon.toLocaleLowerCase().includes(search.value.toLocaleLowerCase())
-    );
-  }
+const countCondition = (condition: status) => {
+  if (condition == "catched")
+    return pokemons.value.filter((p) => p.occurrences != 0 || p.pokedex).length;
+  if (condition == "repeated")
+    return pokemons.value.filter(
+      (p) =>
+        (p.occurrences != 0 && p.occurrences != 1) ||
+        (p.occurrences == 1 && p.pokedex)
+    ).length;
+  if (condition == "pending")
+    return pokemons.value.filter((p) => p.occurrences == 0 && !p.pokedex)
+      .length;
 
-  return filteredPokemons.value;
-});
+  return 0;
+};
 </script>
 
 <template>
-  <h1 class="text-3xl md:text-6xl font-bold mb-4">Pokedex de EduardX</h1>
-  <p v-if="isLoading">Cargando...</p>
-  <div v-else>
-    <RouterLink class="text-sm md:text-2xl text-white" to="/posiciones">
-      Ver ordenados por captura
-    </RouterLink>
-    <div class="flex w-full my-4">
-      <div class="w-1/3">
-        <p class="text-2xl">Atrapados: {{ countCondition("catched") }}</p>
-      </div>
-      <div class="w-1/3">
-        <p class="text-2xl">Pendientes: {{ countCondition("pending") }}</p>
-      </div>
-      <div class="w-1/3">
-        <p class="text-2xl">Repetidos: {{ countCondition("repeated") }}</p>
-      </div>
-    </div>
-    <div class="flex justify-around">
-      <select name="filter" v-model="filter">
+  <div class="mb-8 space-y-4">
+    <div class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+      <input
+        v-model="searchQuery"
+        type="text"
+        placeholder="Buscar Pokémon"
+        class="flex-1 px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 transition-colors"
+      />
+      <select
+        v-model="filter"
+        class="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 transition-colors capitalize"
+      >
         <option value="">Mostrar todos</option>
         <option value="catched">Mostrar atrapados</option>
         <option value="pending">Mostrar pendientes</option>
         <option value="repeated">Mostrar repetidos</option>
       </select>
-      <input type="text" name="search" v-model="search" />
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4 mt-4">
-      <div
-        v-for="pokemon in reFilteredPokemons"
-        :key="pokemon.pokemon"
-        :class="`flex flex-col border-4 ${
-          pokemon.pokedex
-            ? 'border-yellow-500'
-            : pokemon.occurrences == 0
-            ? 'border-red-500'
-            : pokemon.occurrences == 1
-            ? 'border-green-500'
-            : 'border-blue-500'
-        }`"
-      >
-        <RouterLink :to="`/pokemon/${pokemon.position - 1}`">
-          <img
-            :src="`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.position}.png`"
-            :alt="`${pokemon.pokemon}`"
-            class="w-full"
-          />
-        </RouterLink>
-        <p class="text-sm md:text-md text-gray-300">
-          N° {{ pokemon.position }}
-        </p>
-        <p class="text-sm md:text-2xl text-white">
-          {{ pokemon.pokemon }}
-        </p>
-        <p class="text-sm md:text-md text-gray-300 mb-2">
-          {{ `(${pokemon.occurrences})` }}
-        </p>
-      </div>
+    <div class="flex w-full my-4">
+      <StatusCount
+        v-for="status in statusToCount"
+        :key="status.status"
+        :status-text="status.status"
+        :status-count="status.count.value"
+      />
     </div>
+  </div>
+
+  <div
+    v-if="isLoading"
+    class="text-center text-xl text-gray-900 dark:text-white"
+  >
+    Cargando...
+  </div>
+  <div v-else-if="isError" class="text-center text-red-500 text-xl">
+    {{ error }}
+  </div>
+  <div
+    v-else
+    class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6"
+  >
+    <PokemonCard
+      v-for="pokemon in filteredPokemons"
+      :key="pokemon.position"
+      :pokemon="pokemon"
+    />
   </div>
 </template>
