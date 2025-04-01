@@ -71,12 +71,7 @@ const tradePokemon = (position: number) => {
           <div class="grid grid-cols-2 gap-4 text-gray-700 dark:text-gray-300">
             <div>
               <h2 class="text-xl font-semibold mb-2">Disponibles:</h2>
-              <div v-if="!ocurrences.length">
-                <span class="mr-4">No disponible</span>
-                <span @click="searchPokemon" class="font-bold cursor-pointer"
-                  >(Buscar en el mercado)</span
-                >
-              </div>
+              <p v-if="!ocurrences.length">No disponible</p>
               <ul v-else>
                 <li v-for="ocurrence in ocurrences" class="text-xl">
                   <span class="mr-4"
@@ -90,6 +85,12 @@ const tradePokemon = (position: number) => {
                   >
                 </li>
               </ul>
+              <p
+                @click="searchPokemon"
+                class="text-xl font-bold cursor-pointer mt-2"
+              >
+                Buscar en el mercado
+              </p>
             </div>
           </div>
         </div>
