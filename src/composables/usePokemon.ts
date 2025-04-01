@@ -7,19 +7,15 @@ import { database } from "./../database/config";
 const dbRef = firebaseRef(database);
 
 const getPokemon = async (id: string) => {
-  let data = [];
   const realId = parseInt(id) - 1;
   try {
     const snapshot = await get(child(dbRef, "/pokemon/" + realId));
-    if (snapshot.exists()) {
-      data = snapshot.val();
-    }
-    return snapshot.val();
+    if (snapshot.exists()) return snapshot.val();
+    return [];
   } catch (error) {
     console.error(error);
+    return [];
   }
-
-  return data;
 };
 
 const usePokemon = (id: string) => {

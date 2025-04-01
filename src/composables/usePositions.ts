@@ -7,18 +7,14 @@ import { child, get, ref as firebaseRef } from "firebase/database";
 const dbRef = firebaseRef(database);
 
 const getPositions = async () => {
-  let data = [];
   try {
     const snapshot = await get(child(dbRef, "/positions"));
-    if (snapshot.exists()) {
-      data = snapshot.val();
-    }
-    return snapshot.val();
+    if (snapshot.exists()) return snapshot.val();
+    return [];
   } catch (error) {
     console.error(error);
+    return [];
   }
-
-  return data;
 };
 
 const usePositions = () => {

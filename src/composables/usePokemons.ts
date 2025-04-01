@@ -7,18 +7,14 @@ import { child, get, ref as firebaseRef } from "firebase/database";
 const dbRef = firebaseRef(database);
 
 const getPokemons = async () => {
-  let data = [];
   try {
     const snapshot = await get(child(dbRef, "/pokemon"));
-    if (snapshot.exists()) {
-      data = snapshot.val();
-    }
-    return snapshot.val();
+    if (snapshot.exists()) return snapshot.val();
+    return [];
   } catch (error) {
     console.error(error);
+    return [];
   }
-
-  return data;
 };
 
 const usePokemons = () => {
@@ -40,7 +36,7 @@ const usePokemons = () => {
     isLoading,
     pokemons,
     isError,
-    error
+    error,
   };
 };
 
