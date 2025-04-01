@@ -73,6 +73,7 @@ const countCondition = (condition: status) => {
 
 <template>
   <div class="mb-8 space-y-4">
+    <RouterLink class="text-white" to="/positions">Ver por orden de captura</RouterLink>
     <div class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
       <input
         v-model="searchQuery"

@@ -26,9 +26,7 @@ const searchPokemon = () => {
 };
 
 const tradePokemon = (position: number) => {
-  navigator.clipboard.writeText(
-    `@Pokétwo#8236 trade add ${position}`
-  );
+  navigator.clipboard.writeText(`@Pokétwo#8236 trade add ${position}`);
 };
 </script>
 

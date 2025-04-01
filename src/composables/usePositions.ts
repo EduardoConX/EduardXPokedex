@@ -24,7 +24,7 @@ const getPositions = async () => {
 const usePositions = () => {
   const positions = ref<Position[]>([]);
 
-  const { isLoading, data } = useQuery({
+  const { isLoading, data, isError, error } = useQuery({
     queryKey: ["positions"],
     queryFn: () => getPositions(),
   });
@@ -40,6 +40,8 @@ const usePositions = () => {
   return {
     isLoading,
     positions,
+    isError,
+    error,
   };
 };
 
