@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed, ref } from "vue";
 import usePositions from "../composables/usePositions";
 import PositionCard from "../components/PositionCard.vue";
 const { isLoading, positions, error, isError } = usePositions();

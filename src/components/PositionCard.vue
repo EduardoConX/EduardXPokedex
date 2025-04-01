@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import type { Position } from "../interfaces/Position";
-const props = defineProps<{
+defineProps<{
   position: Position;
 }>();
 </script>
 
 <template>
   <div
-    class="ring-blue-400 bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 hover:shadow-xl transition-all ring-4 cursor-pointer"
+    class="ring-blue-400 bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 hover:shadow-xl transition-all ring-4"
   >
     <img
       :src="`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${position.id}.png`"
