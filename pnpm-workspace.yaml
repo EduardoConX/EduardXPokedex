@@ -1,0 +1,23 @@
+allowBuilds:
+  esbuild: set this to true or false
+  protobufjs: set this to true or false
+  vue-demi: set this to true or false
+overrides:
+  '@grpc/grpc-js@<1.13.6': ^1.13.6
+  '@protobufjs/utf8@<=1.1.0': ^1.1.1
+  '@vue/server-renderer@<3.5.42': ^3.5.42
+  brace-expansion@>=2.0.0 <2.1.7: ^2.1.7
+  browserslist@<=4.28.6: ^4.28.7
+  esbuild@<=0.24.2: ^0.25.0
+  glob@>=10.2.0 <10.5.0: ^12.0.0
+  minimatch@>=9.0.0 <9.0.7: ^9.0.7
+  nanoid@<3.3.18: ^3.3.18
+  picomatch@<2.3.2: ^2.3.2
+  postcss-selector-parser@<7.1.6: ^7.1.6
+  postcss@<=8.5.22: ^8.5.23
+  protobufjs@<=7.6.2: ^7.6.3
+  rollup@>=4.0.0 <4.59.0: ^4.59.0
+  source-map-js@>=1.0.0 <1.2.2: ^1.2.2
+  vite@<=6.4.2: ^6.4.3
+  websocket-driver@<0.7.5: ^0.7.5
+  yaml@>=2.0.0 <2.8.3: ^2.8.3
