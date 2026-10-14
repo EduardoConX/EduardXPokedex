@@ -32,8 +32,8 @@ const toggleDarkMode = () => {
           Pokédex de EduardX
         </h1>
         <button
-          @click="toggleDarkMode"
           class="px-4 py-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+          @click="toggleDarkMode"
         >
           {{ isDark ? "🌞 Light" : "🌙 Dark" }}
         </button>

@@ -13,7 +13,7 @@ const { isLoading, pokemon, error, isError } = usePokemon(id as string);
 const { isLoading: isLoadingPositions, positions } = usePositions();
 const ocurrences = ref<Position[]>([]);
 ocurrences.value = positions.value.filter((position) => position.id == +id);
-watch(positions, (newValue, _oldValue) => {
+watch(positions, (newValue) => {
   if (newValue && newValue.length > 0) {
     ocurrences.value = newValue.filter((position) => position.id == +id);
   }
@@ -33,8 +33,8 @@ const tradePokemon = (position: number) => {
 <template>
   <div>
     <button
-      @click="router.push('/')"
       class="mb-6 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+      @click="router.push('/')"
     >
       ← Regresar
     </button>
@@ -79,15 +79,15 @@ const tradePokemon = (position: number) => {
                     {{ ocurrence.position }}</span
                   >
                   <span
-                    @click="() => tradePokemon(ocurrence.position)"
                     class="font-bold cursor-pointer"
+                    @click="() => tradePokemon(ocurrence.position)"
                     >(Agregar al trade)</span
                   >
                 </li>
               </ul>
               <p
-                @click="searchPokemon"
                 class="text-xl font-bold cursor-pointer mt-2"
+                @click="searchPokemon"
               >
                 Buscar en el mercado
               </p>
