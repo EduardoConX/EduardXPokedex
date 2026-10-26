@@ -1,18 +1,121 @@
-# Vue 3 + TypeScript + Vite
+# EduardXPokedex
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+A web application for personally tracking Pokémon you have caught, still need to catch, or have as duplicates. The app combines a visual interface with data stored in Firebase, allowing you to check the status of each Pokémon and filter your collection based on various criteria.
 
-## Recommended IDE Setup
+## Features
 
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+- Displays the complete list of Pokémon, including their number, name, and status.
+- Allows searching by name.
+- Provides filtering by:
+  - caught
+  - pending (not yet caught)
+  - duplicates
+- Shows counters for each category.
+- Includes a dark mode.
+- Allows you to view the order in which Pokémon were caught and access detailed information for each individual Pokémon.
 
-## Type Support For `.vue` Imports in TS
+## Tech Stack
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
+- Vue 3
+- TypeScript
+- Vite
+- Tailwind CSS
+- Firebase Realtime Database
+- TanStack Vue Query
+- Vue Router
 
-If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
+## Project Structure
 
-1. Disable the built-in TypeScript Extension
-   1. Run `Extensions: Show Built-in Extensions` from VSCode's command palette
-   2. Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
-2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
+- `src/pages/`: Main application pages.
+- `src/components/`: Reusable components.
+- `src/composables/`: Data access logic and queries.
+- `src/database/`: Firebase configuration.
+- `src/interfaces/`: TypeScript interfaces.
+- `src/data/`: Pokémon generation data.
+
+## Requirements
+
+- Node.js 18+
+- npm or pnpm
+- A Firebase account with a configured Realtime Database
+
+## Installation
+
+1. Clone the repository:
+```bash
+git clone https://github.com/EduardoConX/EduardXPokedex.git
+cd EduardXPokedex
+```
+
+2. Install dependencies:
+```bash
+npm install
+```
+or, if you prefer pnpm:
+```bash
+pnpm install
+```
+
+3. Create an `.env` file based on `example.env` and add your Firebase credentials:
+```bash
+cp example.env .env
+```
+
+4. Configure the environment variables with the values from your Firebase project. Make sure the names match those used in `src/database/config.ts`.
+
+## Environment Variables
+
+Example:
+
+```env
+VITE_BASE_URL=
+VITE_API_KEY=
+VITE_AUTH_DOMAIN=
+VITE_DATABASE_URL=
+VITE_PROJECT_ID=
+VITE_STORAGE_BUCKET=
+VITE_MESSAGING_SENDER_ID=
+VITE_APP_ID=
+VITE_MEASUREMENT_ID=
+```
+
+> Note: The project uses a single set of variables for Firebase initialization; if any names are added or changed, they must remain consistent within `src/database/config.ts`.
+
+## Running in Development
+
+```bash
+npm run dev
+```
+
+The application will be available on Vite's default port, typically:
+
+```text
+http://localhost:5173
+```
+
+## Production Build
+
+```bash
+npm run build
+```
+
+To preview the compiled version:
+
+```bash
+npm run preview
+```
+
+## Data Flow
+
+The app queries the Firebase database via composables located in `src/composables/` and renders the information in the user interface. The core content is organized around the Pokémon collection and their capture status.
+
+## Future Improvements
+
+- Add unit tests for filters and counters.
+- Review and clean up the Firebase configuration.
+- Improve documentation regarding the data flow.
+- Add CI and linting to ensure code quality.
+
+## License
+
+This project is distributed under the license specified in the `LICENSE` file.

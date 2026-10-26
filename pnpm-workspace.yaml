@@ -1,7 +1,7 @@
 allowBuilds:
-  esbuild: set this to true or false
-  protobufjs: set this to true or false
-  vue-demi: set this to true or false
+  esbuild: false
+  protobufjs: false
+  vue-demi: false
 overrides:
   '@grpc/grpc-js@<1.13.6': ^1.13.6
   '@protobufjs/utf8@<=1.1.0': ^1.1.1

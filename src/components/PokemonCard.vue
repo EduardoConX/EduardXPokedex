@@ -22,11 +22,11 @@ const seePokemon = () => {
 
 <template>
   <div
-    @click="seePokemon"
     :class="[
       pokemon.pokedex ? 'ring-yellow-400' : getTypeColor(pokemon.occurrences),
       'bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 hover:shadow-xl transition-all ring-4 cursor-pointer',
     ]"
+    @click="seePokemon"
   >
     <img
       :src="`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.position}.png`"

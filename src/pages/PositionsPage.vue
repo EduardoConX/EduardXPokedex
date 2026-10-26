@@ -6,7 +6,7 @@ const { isLoading, positions, error, isError } = usePositions();
 
 <template>
   <div class="mb-8 space-y-4">
-    <RouterLink class="text-white" to="/"
+    <RouterLink class="text-gray-900 dark:text-white" to="/"
       >Ver por posición en la Pokédex</RouterLink
     >
   </div>

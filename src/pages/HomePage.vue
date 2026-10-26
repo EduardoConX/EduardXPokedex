@@ -3,77 +3,40 @@ import { computed, ref } from "vue";
 import usePokemons from "../composables/usePokemons";
 import PokemonCard from "../components/PokemonCard.vue";
 import StatusCount from "../components/StatusCount.vue";
+import {
+  countPokemonStatus,
+  filterPokemons,
+  PokemonStatus,
+} from "../utils/pokemonFilters";
+
 const { isLoading, pokemons, isError, error } = usePokemons();
 
 const searchQuery = ref("");
 const filter = ref("");
 
-enum status {
-  catched = "catched",
-  pending = "pending",
-  repeated = "repeated",
-}
-
 const statusToCount = [
   {
     status: "Atrapados",
-    count: computed(() => countCondition(status.catched)),
+    count: computed(() => countPokemonStatus(pokemons.value, PokemonStatus.Catched)),
   },
   {
     status: "Pendientes",
-    count: computed(() => countCondition(status.pending)),
+    count: computed(() => countPokemonStatus(pokemons.value, PokemonStatus.Pending)),
   },
   {
     status: "Repetidos",
-    count: computed(() => countCondition(status.repeated)),
+    count: computed(() => countPokemonStatus(pokemons.value, PokemonStatus.Repeated)),
   },
 ];
 
-const filteredPokemons = computed(() => {
-  const query = searchQuery.value.toLowerCase();
-  const searchedPokemons = pokemons.value.filter((pokemon) =>
-    pokemon.pokemon.toLowerCase().includes(query)
-  );
-
-  if (filter.value === "catched") {
-    return searchedPokemons.filter((p) => p.occurrences !== 0 || p.pokedex);
-  }
-
-  if (filter.value === "pending") {
-    return searchedPokemons.filter((p) => p.occurrences === 0 && !p.pokedex);
-  }
-
-  if (filter.value === "repeated") {
-    return searchedPokemons.filter(
-      (p) =>
-        (p.occurrences !== 0 && p.occurrences !== 1) ||
-        (p.occurrences === 1 && p.pokedex)
-    );
-  }
-
-  return searchedPokemons;
-});
-
-const countCondition = (condition: status) => {
-  if (condition == "catched")
-    return pokemons.value.filter((p) => p.occurrences != 0 || p.pokedex).length;
-  if (condition == "repeated")
-    return pokemons.value.filter(
-      (p) =>
-        (p.occurrences != 0 && p.occurrences != 1) ||
-        (p.occurrences == 1 && p.pokedex)
-    ).length;
-  if (condition == "pending")
-    return pokemons.value.filter((p) => p.occurrences == 0 && !p.pokedex)
-      .length;
-
-  return 0;
-};
+const filteredPokemons = computed(() =>
+  filterPokemons(pokemons.value, searchQuery.value, filter.value as PokemonStatus | "")
+);
 </script>
 
 <template>
   <div class="mb-8 space-y-4">
-    <RouterLink class="text-white" to="/positions">Ver por orden de captura</RouterLink>
+    <RouterLink class="text-gray-900 dark:text-white" to="/positions">Ver por orden de captura</RouterLink>
     <div class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
       <input
         v-model="searchQuery"
